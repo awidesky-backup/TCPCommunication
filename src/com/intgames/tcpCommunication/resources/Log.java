@@ -9,8 +9,8 @@ import java.util.Calendar;
 
 import javax.swing.JTextArea;
 
-import com.intgames.tcpCommunication.Client;
-import com.intgames.tcpCommunication.Server;
+import com.intgames.tcpCommunication.TCPClient;
+import com.intgames.tcpCommunication.TCPServer;
 import com.intgames.tcpCommunication.GUI.ErrorGUI;
 
 @SuppressWarnings("unused")

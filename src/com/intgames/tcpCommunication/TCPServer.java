@@ -17,7 +17,7 @@ import com.intgames.tcpCommunication.resources.Message;
 import com.intgames.tcpCommunication.resources.MessageOutputStream;
 import com.intgames.tcpCommunication.runnables.ServerAccepterThread;
 
-public class Server {
+public class TCPServer {
 
 	
 	/**
@@ -38,7 +38,7 @@ public class Server {
 	
 	public ErrorGUI mg;
 	
-	public Server(String servername, String path, ServerGUI sg, int port) {
+	public TCPServer(String servername, String path, ServerGUI sg, int port) {
 		
 		this.servername = servername;
 		this.mg = new ErrorGUI(this.log); 

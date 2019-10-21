@@ -6,13 +6,13 @@ import java.net.UnknownHostException;
 
 import com.intgames.tcpCommunication.GUI.ErrorGUI;
 
-public class Client {
+public class TCPClient {
 
 	private Socket sock;
 	
 	public ErrorGUI mg;
 	
-	public Client() {
+	public TCPClient() {
 		
 		
 	}

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.intgames.tcpCommunication.ClientData;
-import com.intgames.tcpCommunication.Server;
+import com.intgames.tcpCommunication.TCPServer;
 import com.intgames.tcpCommunication.Exception.BannedClientException;
 import com.intgames.tcpCommunication.GUI.ErrorGUI;
 import com.intgames.tcpCommunication.resources.MessageOutputStream;
@@ -20,12 +20,12 @@ public class ServerAccepterThread extends Thread {
 	private ServerSocket sock;
 	private MessageOutputStream mo;
 	private ObjectInputStream oi;
-	private Server svr;
+	private TCPServer svr;
 	private ErrorGUI mg;
 	private List<MessageGetterThread> msggetter = new LinkedList<>();
 	private boolean isrunning;
 	
-	public ServerAccepterThread(ServerSocket server, Server svr) {
+	public ServerAccepterThread(ServerSocket server, TCPServer svr) {
 		// TODO Auto-generated constructor stub
 		this.sock = server;
 		this.svr = svr;
