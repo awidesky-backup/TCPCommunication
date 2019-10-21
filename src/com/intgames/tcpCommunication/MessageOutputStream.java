@@ -1,4 +1,4 @@
-package com.intgames.tcpCommunication.resources;
+package com.intgames.tcpCommunication;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

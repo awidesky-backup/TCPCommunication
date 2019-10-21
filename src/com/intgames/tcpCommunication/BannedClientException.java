@@ -1,4 +1,4 @@
-package com.intgames.tcpCommunication.Exception;
+package com.intgames.tcpCommunication;
 
 public class BannedClientException extends Exception {
 
