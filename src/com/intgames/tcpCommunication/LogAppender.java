@@ -5,6 +5,11 @@ import java.io.IOException;
 
 import javax.swing.JTextArea;
 
+
+/*
+ * Check if this method does same work as LogProvider!
+ * 
+ * */
 public class LogAppender {
 
 	private BufferedWriter br = null;

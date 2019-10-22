@@ -8,14 +8,13 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.intgames.tcpCommunication.Exception.BannedClientException;
-import com.intgames.tcpCommunication.GUI.ErrorGUI;
-import com.intgames.tcpCommunication.GUI.ServerGUI;
-import com.intgames.tcpCommunication.resources.Log;
-import com.intgames.tcpCommunication.resources.LogAppender;
-import com.intgames.tcpCommunication.resources.Message;
-import com.intgames.tcpCommunication.resources.MessageOutputStream;
-import com.intgames.tcpCommunication.runnables.ServerAccepterThread;
+import com.intgames.tcpCommunication.BannedClientException;
+import com.intgames.tcpCommunication.Log;
+import com.intgames.tcpCommunication.LogAppender;
+import com.intgames.tcpCommunication.Message;
+import com.intgames.tcpCommunication.MessageOutputStream;
+import com.intgames.tcpCommunication.ServerAccepterThread;
+import com.intgames.tcpCommunication.ErrorProvider;
 
 public class TCPServer {
 
@@ -34,16 +33,15 @@ public class TCPServer {
 	private List<ClientData> connectedClient = new LinkedList<>();
 	private List<String> banned = new LinkedList<>();
 	private Log log;
-	private ServerGUI sg;
+	private LogProvider lg;
+	public ErrorProvider ep;
 	
-	public ErrorGUI mg;
-	
-	public TCPServer(String servername, String path, ServerGUI sg, int port) {
+	public TCPServer(String servername, String logPath, ErrorProvider ep, LogProvider lg, int port) {
 		
 		this.servername = servername;
-		this.mg = new ErrorGUI(this.log); 
-		this.log = new Log(servername, path, mg, new LogAppender());
-		this.sg = sg;
+		this.ep = ep; 
+		this.log = new Log(servername, logPath, this,ep, new LogAppender());
+		this.lg = lg;
 		
 		setnetwork(port);
 		
@@ -53,13 +51,13 @@ public class TCPServer {
 		
 		try {
 			
-			sg.showtext("ServerSosket 생성 중...");
+			lg.provide("ServerSosket 생성 중...");
 			serversc = new ServerSocket(port);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			mg.error("ServerSocket 생성 실패!", "ServerSocket 생성에 실패했습니다!\n" + e.getMessage());
-			sg.showtext("ServerSocket 생성 실패-" + e.getMessage());
+			ep.provide("ServerSocket 생성 실패!", "ServerSocket 생성에 실패했습니다!\n" + e.getMessage());
+			lg.provide("ServerSocket 생성 실패-" + e.getMessage());
 			return;
 		
 		}
@@ -97,13 +95,13 @@ public class TCPServer {
 	
 	public void error(String title, String message) {
 		
-		mg.error(title, message);
+		ep.provide(title, message);
 		
 	}
 	
 	public void showtext(String string) {
 		
-		sg.showtext(string);
+		lg.provide(string);
 		
 	}
 	
@@ -124,8 +122,8 @@ public class TCPServer {
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				mg.error("서버 전송 오류", co.ip + " 로 메시지를 전송할 수 없습니다.\n" + e.getMessage());
-				sg.showtext(co.ip + " 로 메시지를 전송할 수 없음-" + e.getMessage());
+				ep.provide("서버 전송 오류", co.ip + " 로 메시지를 전송할 수 없습니다.\n" + e.getMessage());
+				lg.provide(co.ip + " 로 메시지를 전송할 수 없음-" + e.getMessage());
 				
 			}
 			
@@ -153,8 +151,8 @@ public class TCPServer {
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				mg.error("서버를 닫을 수 없습니다!", co.ip + " 와 연결된 스트림을 닫는 도중 문제가 발생했습니다.\n" + e.getMessage());
-				sg.showtext(co.ip + " 와 연결된 스트림을 닫는 도중 문제 발생-" + e.getMessage());
+				ep.provide("서버를 닫을 수 없습니다!", co.ip + " 와 연결된 스트림을 닫는 도중 문제가 발생했습니다.\n" + e.getMessage());
+				lg.provide(co.ip + " 와 연결된 스트림을 닫는 도중 문제 발생-" + e.getMessage());
 				
 			}
 			

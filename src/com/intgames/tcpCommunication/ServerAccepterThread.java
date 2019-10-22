@@ -29,7 +29,7 @@ public class ServerAccepterThread extends Thread {
 		// TODO Auto-generated constructor stub
 		this.sock = server;
 		this.svr = svr;
-		this.mg = svr.mg;
+		this.mg = svr.ep;
 		this.isrunning = true;
 	}
 
