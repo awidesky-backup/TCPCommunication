@@ -11,9 +11,6 @@ import java.util.List;
 
 import com.intgames.tcpCommunication.ClientData;
 import com.intgames.tcpCommunication.TCPServer;
-import com.intgames.tcpCommunication.Exception.BannedClientException;
-import com.intgames.tcpCommunication.GUI.ErrorGUI;
-import com.intgames.tcpCommunication.resources.MessageOutputStream;
 
 public class ServerAccepterThread extends Thread {
 
@@ -21,7 +18,6 @@ public class ServerAccepterThread extends Thread {
 	private MessageOutputStream mo;
 	private ObjectInputStream oi;
 	private TCPServer svr;
-	private ErrorGUI mg;
 	private List<MessageGetterThread> msggetter = new LinkedList<>();
 	private boolean isrunning;
 	
@@ -29,7 +25,6 @@ public class ServerAccepterThread extends Thread {
 		// TODO Auto-generated constructor stub
 		this.sock = server;
 		this.svr = svr;
-		this.mg = svr.ep;
 		this.isrunning = true;
 	}
 
@@ -64,18 +59,18 @@ public class ServerAccepterThread extends Thread {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			
-			mg.error("클라이언트 연결 오류!", "클라이언트와 연결하는 도중 문제가 발생했습니다!\n" + e.getMessage());
-			svr.showtext("클라이언트 연결 불가-"+ e.getMessage());
+			svr.error("클라이언트 연결 오류!", "클라이언트와 연결하는 도중 문제가 발생했습니다!\n" + e.getMessage());
+			svr.addlog("클라이언트 연결 불가-"+ e.getMessage(), Logtype.ERROR);
 			return;
 			
 		} catch (BannedClientException e) {
 			
-			svr.showtext("허용되지 않은 사용자 차단 - "+ e.getMessage());
+			svr.addlog("허용되지 않은 사용자 차단 - "+ e.getMessage(), Logtype.PLANE);
 			return;
 			
 		}
 		
-		svr.showtext(ip.toString() + " 에서 클라이언트 접속 성공");
+		svr.addlog(ip.toString() + " 에서 클라이언트 접속 성공", Logtype.PLANE);
 		
 		MessageGetterThread th = new MessageGetterThread(oi, this.svr, ip.toString());
 		this.msggetter.add(th);

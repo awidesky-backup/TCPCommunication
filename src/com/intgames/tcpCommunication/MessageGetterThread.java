@@ -45,14 +45,14 @@ public class MessageGetterThread extends Thread {
 		} catch (IOException e) {
 			
 			// TODO Auto-generated catch block
-			svr.ep.error("데이터 수신 오류!", "메시지를 받아오는 데 실패했습니다.\n" + e.getMessage());
-			svr.showtext(ip + "에게서 메시지를 받아오는 도중 실패-" + e.getMessage());
+			svr.eh.provide("데이터 수신 오류!", "메시지를 받아오는 데 실패했습니다.\n" + e.getMessage());
+			svr.addlog(ip + "에게서 메시지를 받아오는 도중 실패-" + e.getMessage(), Logtype.ERROR);
 			
 		} catch (ClassNotFoundException e) {
 			
 			// TODO Auto-generated catch block
-			svr.ep.error("데이터 수신 오류!", "수신된 데이터를 변환하는 도중 문제가 발생했습니다.\n" + e.getMessage());
-			svr.showtext(ip + "에게서 수신된 데이터를 변환하는 도중 문제 발생-" + e.getMessage());
+			svr.eh.provide("데이터 수신 오류!", "수신된 데이터를 변환하는 도중 문제가 발생했습니다.\n" + e.getMessage());
+			svr.addlog(ip + "에게서 수신된 데이터를 변환하는 도중 문제 발생-" + e.getMessage(), Logtype.ERROR);
 			
 		}
 	
@@ -72,7 +72,7 @@ public class MessageGetterThread extends Thread {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 
-			svr.ep.error("서버를 닫을 수 없습니다!",e.getMessage());
+			svr.eh.provide("서버를 닫을 수 없습니다!",e.getMessage());
 		
 		}
 		

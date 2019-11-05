@@ -2,8 +2,6 @@ package com.intgames.tcpCommunication;
 
 import java.net.InetAddress;
 
-import com.intgames.tcpCommunication.resources.MessageOutputStream;
-
 public class ClientData {
 
 	public InetAddress ip;
