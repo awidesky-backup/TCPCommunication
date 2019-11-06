@@ -4,4 +4,5 @@ package com.intgames.tcpCommunication;
 public interface ErrorHandler {
 
 	public void provide(String title, String content);
+	
 }
