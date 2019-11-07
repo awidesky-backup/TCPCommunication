@@ -115,7 +115,7 @@ public class TCPServer {
 		
 		switch (st) {
 
-		case CUSTOM:
+		case SELECTIVELY:
 			
 			mh.Handle(msg, ping);
 			break;
