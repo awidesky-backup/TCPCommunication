@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TCPServer {
 
@@ -22,12 +24,12 @@ public class TCPServer {
 	private String servername;
 	private ServerSocket serversc;
 	private ServerMessageHandleType st;
+	private ExecutorService messageGetterThreadPool;
 	private ServerAccepterThread sa;
 	private List<ClientData> connectedClient = new LinkedList<>();
 	private List<String> banned = new LinkedList<>();
 	private Logger lg;
 	private ErrorHandler eh;
-	private MessageHandler mh = null;
 	
 	public TCPServer(String servername, ServerMessageHandleType st, Logger lg, ErrorHandler ep, int port, int maxclient) {
 		
@@ -35,6 +37,8 @@ public class TCPServer {
 		this.st = st;
 		this.eh = ep; 
 		this.lg = lg;
+		
+		messageGetterThreadPool = Executors.newFixedThreadPool(maxclient); 
 		
 		setnetwork(port, maxclient);
 		
@@ -55,7 +59,7 @@ public class TCPServer {
 		
 		}
 		
-		this.sa = new ServerAccepterThread(serversc, this);
+		this.sa = new ServerAccepterThread(serversc, this, messageGetterThreadPool);
 		this.sa.setDaemon(true);
 		this.sa.start();
 		

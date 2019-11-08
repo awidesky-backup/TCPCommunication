@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import com.intgames.tcpCommunication.ClientData;
 import com.intgames.tcpCommunication.TCPServer;
@@ -18,14 +19,17 @@ public class ServerAccepterThread extends Thread {
 	private MessageOutputStream mo;
 	private ObjectInputStream oi;
 	private TCPServer svr;
-	private List<MessageGetterThread> msggetter = new LinkedList<>();
+	private ExecutorService threadPool;
+	private List<ServerMessageGetter> msggetter = new LinkedList<>();
 	private boolean isrunning;
 	
-	public ServerAccepterThread(ServerSocket server, TCPServer svr) {
+	public ServerAccepterThread(ServerSocket server, TCPServer svr, ExecutorService messageGetterThreadPool) {
 		// TODO Auto-generated constructor stub
 		this.sock = server;
 		this.svr = svr;
 		this.isrunning = true;
+		this.threadPool = messageGetterThreadPool;
+		
 	}
 
 	
@@ -72,17 +76,14 @@ public class ServerAccepterThread extends Thread {
 		
 		svr.addlog(ip.toString() + " 에서 클라이언트 접속 성공", Logtype.PLANE);
 		
-		MessageGetterThread th = new MessageGetterThread(oi, this.svr, ip.toString());
-		this.msggetter.add(th);
-		th.setDaemon(true);
-		th.start();
+		threadPool.submit(new ServerMessageGetter(oi, this.svr, ip.toString()));
 		
 	}
 	
 	public void kill() {
 		
 		this.isrunning = false;
-		Iterator<MessageGetterThread> it = this.msggetter.iterator();
+		Iterator<ServerMessageGetter> it = this.msggetter.iterator();
 		
 		while(it.hasNext()) {
 			

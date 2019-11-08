@@ -5,14 +5,14 @@ import java.io.ObjectInputStream;
 
 import com.intgames.tcpCommunication.TCPServer;
 
-public class MessageGetterThread extends Thread {
+public class ServerMessageGetter implements Runnable {
 
 	private ObjectInputStream oi;
 	private TCPServer svr;
 	private String ip;
 	private boolean isrunning;
 	
-	public MessageGetterThread(ObjectInputStream oi, TCPServer svr, String ip) {
+	public ServerMessageGetter(ObjectInputStream oi, TCPServer svr, String ip) {
 		// TODO Auto-generated constructor stub
 		this.oi = oi;
 		this.svr = svr;
