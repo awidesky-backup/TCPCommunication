@@ -55,7 +55,8 @@ public class MessageGetterThread extends Thread {
 			
 		}
 	
-		svr.gotMessage(msg, ping);
+		
+		svr.sendMessage(msg, ping);
 	
 	}
 

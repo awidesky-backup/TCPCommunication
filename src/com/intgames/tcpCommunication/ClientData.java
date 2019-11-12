@@ -6,7 +6,8 @@ public class ClientData {
 
 	public InetAddress ip;
 	public MessageOutputStream mo;
-	
+	public boolean isExcluded;
+
 	public ClientData(MessageOutputStream mo2, InetAddress ip2) {
 		// TODO Auto-generated constructor stub
 		

@@ -21,18 +21,17 @@ public class TCPServer {
 	
 	private String servername;
 	private ServerSocket serversc;
-	private ServerMessageHandleType st;
 	private ServerAccepterThread sa;
 	private List<ClientData> connectedClient = new LinkedList<>();
 	private List<String> banned = new LinkedList<>();
 	private Logger lg;
 	private ErrorHandler eh;
-	private MessageHandler mh = null;
+	private ServerMessageChecker messageChecker;
 	
-	public TCPServer(String servername, ServerMessageHandleType st, Logger lg, ErrorHandler ep, int port, int maxclient) {
+	public TCPServer(String servername,ServerMessageChecker smc, Logger lg, ErrorHandler ep, int port, int maxclient) {
 		
 		this.servername = servername;
-		this.st = st;
+		this.messageChecker = smc;
 		this.eh = ep; 
 		this.lg = lg;
 		
@@ -61,18 +60,6 @@ public class TCPServer {
 		
 	}
 	
-	public void setMessageHandling(ServerMessageHandleType st, MessageHandler mh) {
-		
-		this.st = st;
-		this.mh = mh;
-		
-	}
-	
-	public ServerMessageHandleType getMessageHandleType() {
-		
-		return st;
-		
-	}
 	
 	public void checkClient(Socket client) throws BannedClientException {
 		
@@ -99,6 +86,12 @@ public class TCPServer {
 		
 	}
 	
+	public List<ClientData> getClientData() {
+		
+		return connectedClient;
+		
+	}
+	
 	public void error(String title, String message) {
 		
 		eh.provide(title, message);
@@ -111,31 +104,18 @@ public class TCPServer {
 		
 	}
 	
-	public void gotMessage(Message msg, long ping) {
-		
-		switch (st) {
-
-		case SELECTIVELY:
-			
-			mh.Handle(msg, ping);
-			break;
-		
-		case ECHO:
-			
-			sendEveryone(msg, ping);
-			break;
-		
-		}
-		
-	}
 	
-	public void sendEveryone(Message msg, long ping) {
+	public void sendMessage(Message msg, long ping) {
+		
+		messageChecker.check(msg);
 		
 		Iterator<ClientData> it = connectedClient.iterator();
 		
 		while(it.hasNext()) {
 			
 			ClientData co = it.next();
+			
+			if (co.isExcluded) continue; // don't send message to excluded client
 			
 			try {
 				
