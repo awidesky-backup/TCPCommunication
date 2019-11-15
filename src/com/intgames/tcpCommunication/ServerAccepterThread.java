@@ -56,7 +56,6 @@ public class ServerAccepterThread extends Thread {
 			
 			ip = sc.getLocalAddress();
 			mo = new MessageOutputStream(sc.getOutputStream());
-			svr.addClientData(new ClientData(mo, ip));
 			oi = new ObjectInputStream(sc.getInputStream());
 			
 			
@@ -74,9 +73,14 @@ public class ServerAccepterThread extends Thread {
 			
 		}
 		
+		ServerMessageGetter messageGetter = new ServerMessageGetter(oi, this.svr, ip.toString());
+		
+		ClientData cd = new ClientData(mo, ip, messageGetter);
+		svr.addClientData(cd);
+		messageGetter.setSender(cd);
 		svr.addlog(ip.toString() + " 에서 클라이언트 접속 성공", Logtype.PLANE);
 		
-		threadPool.submit(new ServerMessageGetter(oi, this.svr, ip.toString()));
+		threadPool.submit(messageGetter);
 		
 	}
 	

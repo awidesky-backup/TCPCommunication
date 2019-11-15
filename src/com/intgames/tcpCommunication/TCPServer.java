@@ -31,6 +31,7 @@ public class TCPServer {
 	private ErrorHandler eh;
 	private ServerMessageChecker messageChecker;
 	
+	
 	public TCPServer(String servername,ServerMessageChecker smc, Logger lg, ErrorHandler ep, int port, int maxclient) {
 		
 		this.servername = servername;

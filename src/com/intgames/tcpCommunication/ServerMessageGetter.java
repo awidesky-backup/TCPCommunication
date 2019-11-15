@@ -7,6 +7,7 @@ import com.intgames.tcpCommunication.TCPServer;
 
 public class ServerMessageGetter implements Runnable {
 
+	private ClientData sender; 
 	private ObjectInputStream oi;
 	private TCPServer svr;
 	private String ip;
@@ -33,6 +34,7 @@ public class ServerMessageGetter implements Runnable {
 	}
 	
 	private void getmessage() {
+		
 		Message msg = null;
 		long ping = 0L;
 		
@@ -72,8 +74,16 @@ public class ServerMessageGetter implements Runnable {
 			// TODO Auto-generated catch block
 
 			svr.error("서버를 닫을 수 없습니다!",e.getMessage());
+			Thread.currentThread().interrupt();
 		
 		}
+		
+	}
+
+	public void setSender(ClientData cd) {
+		// TODO Auto-generated method stub
+		
+		sender = cd;
 		
 	}
 
