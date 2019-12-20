@@ -41,16 +41,16 @@ public class TCPServer {
 		
 		messageGetterThreadPool = Executors.newFixedThreadPool(maxclient); 
 		
-		setnetwork(port, maxclient);
+		setnetwork(port);
 		
 	}
 
-	public void setnetwork(int port, int maxclient) {
+	public void setnetwork(int port) {
 		
 		try {
 			
 			lg.provide("ServerSosket »ý¼º Áß...", Logtype.PLANE);
-			serversc = new ServerSocket(port, maxclient);
+			serversc = new ServerSocket(port);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
